@@ -10,11 +10,11 @@ import spade.utility.HelperFunctions;
 public class Configuration{
 
 	private static final String
-		  keyHost = "host"
-		, keyPort = "port"
-		, keyDatabase = "database"
-		, keyUsername = "username"
-		, keyPassword = "password";
+		  keyHost = "localhost"
+		, keyPort = "8529"
+		, keyDatabase = "spade"
+		, keyUsername = "root"
+		, keyPassword = "";
 
 	private String host;
 	private int port;
@@ -29,7 +29,7 @@ public class Configuration{
 			port = ArgumentFunctions.mustParseInteger(keyPort, map);
 			dbName = ArgumentFunctions.mustParseNonEmptyString(keyDatabase, map);
 			dbUser = ArgumentFunctions.mustParseNonEmptyString(keyUsername, map);
-			dbPassword = ArgumentFunctions.mustParseNonEmptyString(keyPassword, map);
+			dbPassword = ArgumentFunctions.mustParseNonNullString(keyPassword, map);
 		}catch(Exception e){
 			throw new Exception("Failed to read/parse configuration: '" + path + "'", e);
 		}
