@@ -55,10 +55,6 @@ public class Configuration{
 		return dbPassword;
 	}
 
-	public boolean useFetchSize(){
-		return fetchSize > 0;
-	}
-
 	@Override
 	public String toString(){
 		return "Configuration [host=" + host + ", port=" + port + ", dbName=" + dbName + ", dbUser=" + dbUser + ", dbPassword=" + dbPassword + "]";

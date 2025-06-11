@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import spade.core.Settings;
 import spade.storage.arangodb.Configuration;
 
 public class ArangoDBStorage extends AbstractStorage {
@@ -30,8 +31,8 @@ public class ArangoDBStorage extends AbstractStorage {
             String dbName   = configuration.getDbName();
             String host     = configuration.getHost();
             int port        = configuration.getPort();
-            String user     = configuration.getUser();
-            String password = configuration.getPassword();
+            String user     = configuration.getDbUser();
+            String password = configuration.getDbPassword();
 
             arangoDB = new ArangoDB.Builder()
                     .host(host, port)

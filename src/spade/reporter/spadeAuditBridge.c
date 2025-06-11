@@ -72,7 +72,7 @@ int max_pid = -1;
 #define MWRITE2 0xfffffed3
 #define UDEP 0xfffffe70 // (kill (-400, dependent id)
 
-typedef int bool;
+typedef int int_bool_t;
 #define true 1
 #define false 0
 
@@ -125,7 +125,7 @@ typedef struct unit_table_t {
 //		int tid; // pid in auditlog which is actually thread_id.
 		int pid; // process id.  (main thread id)
 		thread_unit_t cur_unit;
-		bool valid; // is valid unit?
+		int_bool_t valid; // is valid unit?
 		long int r_addr;
 		long int w_addr;
 		link_unit_t *link_unit;
@@ -135,7 +135,7 @@ typedef struct unit_table_t {
 		int merge_count;
 		unit_id_map_t *unit_id_map;
 		char proc[1024];
-		bool signal_handler[MAX_SIGNO];
+		int_bool_t signal_handler[MAX_SIGNO];
 		UT_hash_handle hh;
 } unit_table_t;
 
@@ -190,12 +190,12 @@ double last_time = -1;
 // A list of thread start times for each pid seen being created
 thread_time_t *thread_create_time;
 // A flag to indicate that only a single file is to be processed with 'F' flag
-bool singleFile = FALSE;
+int_bool_t singleFile = FALSE;
 
 unit_table_t *unit_table;
 event_buf_t *event_buf;
 
-bool incomplete_record = false;
+int_bool_t incomplete_record = false;
 
 void syscall_handler(char *buf);
 int get_max_pid();
@@ -629,7 +629,7 @@ void reset_current_time_iteration_counts(){
 	current_time_iterations_index = 0;	
 }
 
-bool is_same_unit(thread_unit_t u1, thread_unit_t u2)
+int_bool_t is_same_unit(thread_unit_t u1, thread_unit_t u2)
 {
 		if(u1.tid == u2.tid && 
 				 u1.thread_time.seconds == u2.thread_time.seconds &&
@@ -726,7 +726,7 @@ long get_eventid(char* buf){
 		return eventId;
 }
 
-int emit_log(unit_table_t *ut, char* buf, bool print_unit, bool print_proc)
+int emit_log(unit_table_t *ut, char* buf, int_bool_t print_unit, int_bool_t print_proc)
 {
 		if(incomplete_record == true) return 0;
 		if(print_proc && ut->proc[0] == '\0') return 0;
@@ -1139,7 +1139,7 @@ void UBSI_dep(unit_table_t *ut, long unit_from, char *buf)
 		//emit_log(ut, tmp, true, true);
 }
 
-unit_table_t* add_unit(int tid, int pid, bool valid)
+unit_table_t* add_unit(int tid, int pid, int_bool_t valid)
 {
 		int i;
 		struct unit_table_t *ut;
@@ -1321,7 +1321,7 @@ void UBSI_event(long tid, long a0, long a1, char *buf)
 		}
 }
 
-void non_UBSI_event(long tid, int sysno, bool succ, long a0, long a1, long a2, char *buf)
+void non_UBSI_event(long tid, int sysno, int_bool_t succ, long a0, long a1, long a2, char *buf)
 {
 		char *ptr;
 		int time, retno;
@@ -1428,7 +1428,7 @@ void non_UBSI_event(long tid, int sysno, bool succ, long a0, long a1, long a2, c
 		}
 }
 
-bool get_succ(char *buf, int sysno)
+int_bool_t get_succ(char *buf, int sysno)
 {
 		char *ptr;
 		char succ[16];
@@ -1510,7 +1510,7 @@ void syscall_handler(char *buf)
 		char *ptr;
 		int sysno, retno;
 		long a0, a1, a2, a3, pid, ppid;
-		bool succ = false;
+		int_bool_t succ = false;
 
 		incomplete_record = false;
 
