@@ -10,11 +10,11 @@ import spade.utility.HelperFunctions;
 public class Configuration{
 
 	private static final String
-		  keyHost = "localhost"
-		, keyPort = "8529"
-		, keyDatabase = "spade"
-		, keyUsername = "root"
-		, keyPassword = "";
+		  keyHost = "host"
+		, keyPort = "port"
+		, keyDatabase = "database"
+		, keyUsername = "username"
+		, keyPassword = "password";
 
 	private String host;
 	private int port;
