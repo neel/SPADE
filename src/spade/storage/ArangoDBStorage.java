@@ -4,6 +4,8 @@ import com.arangodb.ArangoDB;
 import com.arangodb.ArangoDatabase;
 import com.arangodb.entity.BaseDocument;
 import com.arangodb.ArangoDBException;
+import com.arangodb.entity.*;
+import com.arangodb.model.*;
 
 import spade.core.AbstractEdge;
 import spade.core.AbstractStorage;
@@ -50,7 +52,7 @@ public class ArangoDBStorage extends AbstractStorage {
             }
 
             if (!database.collection("edges").exists()) {
-                database.createCollection("edges");
+                database.createCollection("edges", new CollectionCreateOptions().type(CollectionType.EDGES));
             }
 
             return true;
