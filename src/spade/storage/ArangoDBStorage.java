@@ -2,6 +2,7 @@ package spade.storage;
 
 import com.arangodb.ArangoDB;
 import com.arangodb.ArangoDatabase;
+import com.arangodb.ArangoCollection;
 import com.arangodb.entity.BaseDocument;
 import com.arangodb.ArangoDBException;
 import com.arangodb.entity.*;
@@ -47,12 +48,23 @@ public class ArangoDBStorage extends AbstractStorage {
                 database.create();
             }
 
-            if (!database.collection("vertices").exists()) {
-                database.createCollection("vertices");
+            ArangoCollection edgesColl = database.collection("edges");
+            if (!edgesColl.exists()) {
+                database.createCollection("edges", new CollectionCreateOptions().type(CollectionType.EDGES));
+            } else {
+                // fetch its metadata
+                CollectionEntity edgesInfo = edgesColl.getInfo();
+                if (edgesInfo.getType() != CollectionType.EDGES) {
+                    // drop and recreate both collections if type mismatch
+                    edgesColl.drop();
+                    database.collection("vertices").drop();
+                    database.createCollection("edges",new CollectionCreateOptions().type(CollectionType.EDGES));
+                }
             }
 
-            if (!database.collection("edges").exists()) {
-                database.createCollection("edges", new CollectionCreateOptions().type(CollectionType.EDGES));
+            ArangoCollection verticesColl = database.collection("vertices");
+            if (!verticesColl.exists()) {
+                database.createCollection("vertices");
             }
 
             return true;
